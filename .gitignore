@@ -1,0 +1,6 @@
+Card_detector/data/train
+Card_detector/data/test
+Card_detector/data/train.txt
+Card_detector/data/test.txt
+Card_detector/data/cards
+Card_detector/data/cards.pck
