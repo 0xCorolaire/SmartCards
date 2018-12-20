@@ -55,18 +55,18 @@ Check YOLO ipny and complete the setup indicated in the file
 ```
 pip install --requirements.txt
 ```
-## Lancer le server
+## Launch server
 ```
 python migrate.py makemigrations
 python migrate.py migrate
 python migrate.py runserver
 ```
 
-## Implémentation
-On possède plusieurs app :
-- django-cards qui regroupe tous les app et créer les routes
-- coinche qui propose une AI pour le jeu de la coinche et récupérer une liste de cartes, les règles etc..
-- detector qui est l'app où repose YOLO trained ( envoie de photo, retour avec l'analyse )
+## Implementation
+Severla apps are available :
+- django-cards that gather routes
+- coinche that creates the AI and getting rules of the game
+- detector where YOLO trained is used ( sending photos and analysis return )
 
 
 # API Doc :
