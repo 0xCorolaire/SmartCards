@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "/home/bocboc/ReactNative/CardsAssistant/CardsAssistant/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/home/bocboc/.gradle/caches/transforms-1/files-1.1/support-compat-27.1.1.aar/b5997d4ffe2383b0deb881e13d34ed0a/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/home/bocboc/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/094d037aa43944eb9959863c709d7066/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        }
+    ]
+}
