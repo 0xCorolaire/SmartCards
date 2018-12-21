@@ -253,20 +253,168 @@ def getGameHands(request):
 
 @api_view(['POST'])
 @renderer_classes((JSONRenderer, ))
-def ia_bet(request):
+def getAiBet(request):
     """
-    IA d'une annonce simple à la coinche , en request on nous passe la liste de cartes et les anciennes annonces
+    IA d'une annonce simple à la coinche , en request on nous passe la liste de cartes et les anciennes annonces. ON a :
+    requests : {
+        "player_hand" : [{
+            "card_name" : "As",
+            "value_atout": "11",
+            "value_non_atout": "11",
+        },
+        {
+
+        }
+        ...
+        ],
+        "partner_bet" : {
+            "type_bet" : "D",
+            "value_bet" : "80"
+        },
+        "ennemy_bet" : {
+            "type_bet" : "D",
+            "value_bet" : "80"
+        }
+    }
     """
     body = json.loads(request.body)
-    hand = body['player_hand']
-    type_card = ['s','c','d','h']
+    total_hand = body['player_hand']
+    hand = []
+    partner_bet = body['partner_bet']
+    ennemy_bet = body['ennemy_bet']
+    for player_hand in total_hand:
+        hand.append(player_hand.get('card_name'))
+    s = 0
+    c = 0
+    d = 0
+    h = 0
+    card_s = ['s']
+    card_c = ['c']
+    card_d = ['d']
+    card_h = ['h']
+    card_As = []
+    As = 0
     #On prends la plus longue longe de la main
+    for x in hand:
+        if "s" in x:
+            s+=1
+            card_s.append(x)
+        if "c" in x:
+            c+=1
+            card_c.append(x)
+        if "d" in x:
+            d+=1
+            card_d.append(x)
+        if "h" in x:
+            h+=1
+            card_h.append(x)
+        if "A" in x:
+            As+=1
+            card_As.append(x)
+    longe_n = max(s,c,d,h)
+    # on trouv la couleur de la longe
+    color = ""
+    if (longe_n==(len(card_s)-1)):
+        color = "s"
+    if (longe_n==(len(card_c)-1)):
+        color = "c"
+    if (longe_n==(len(card_d)-1)):
+        color = "d"
+    if (longe_n==(len(card_h)-1)):
+        color = "h"
 
-
-
-
-
-    return Response()
+    if partner_bet['value_bet'] != 0 and ennemy_bet['value_bet'] != 0:
+        is_announcing_first ='False'
+    else:
+        is_announcing_first ='True'
+    if longe_n < 3:
+        # on trouve la type
+        if is_announcing_first=='False' and As != 0:
+            if partner_bet['value_bet'] > ennemy_bet['value_bet']:
+                if lower(partner_bet['type_bet']) in card_As and As<2:
+                    bet = {
+                        "type_bet" : "Pass",
+                        "value_bet" : "0",
+                    }
+                else:
+                    upbet= 10*As + partner_bet['value_bet']
+                    bet = {
+                        "type_bet" : partner_bet['type_bet'],
+                        "value_bet" : upbet,
+                    }
+            else:
+                bet = {
+                    "type_bet" : "Pass",
+                    "value_bet" : "0",
+                }
+        else:
+            bet = {
+                "type_bet" : "Pass",
+                "value_bet" : "0",
+            }
+    else:
+        #On a une longe de 3 ou plus, on va étudier la longe
+        got_j = 0
+        got_9 = 0
+        got_a = 0
+        for x in hand:
+            if color in x:
+                if 'J' in x:
+                    got_j = 20
+                if '9' in x:
+                    got_9 = 14
+                if 'A' in x:
+                    got_a = 11
+        sum = got_j+got_a+got_9
+        if is_announcing_first == 'False':
+            if partner_bet['value_bet'] > ennemy_bet['value_bet'] and As != 0:
+                    upbet= 10*As + int(partner_bet['value_bet'])
+                    bet = {
+                        "type_bet" : partner_bet['type_bet'],
+                        "value_bet" : upbet,
+                    }
+            else:
+                if (int(ennemy_bet['value_bet'])-int(partner_bet['value_bet']))<20 and As>1:
+                    upbet= 10 + int(ennemy_bet['value_bet'])
+                    bet = {
+                        "type_bet" : partner_bet['type_bet'],
+                        "value_bet" :upbet,
+                    }
+                else:
+                    bet = {
+                        "type_bet" : "Pass",
+                        "value_bet" : "0",
+                    }
+        else:
+            if longe_n < 5 :
+                if sum < 31 :
+                    bet = {
+                        "type_bet" : "Pass",
+                        "value_bet" : "0",
+                    }
+                else:
+                    if sum < 45 :
+                        bet = {
+                            "type_bet" : color,
+                            "value_bet" : "80",
+                        }
+                    else:
+                        bet = {
+                            "type_bet" : color,
+                            "value_bet" : "90",
+                        }
+            else:
+                if sum > 19 and sum < 30 :
+                        bet = {
+                            "type_bet" : color,
+                            "value_bet" : "90",
+                        }
+                else :
+                        bet = {
+                            "type_bet" : color,
+                            "value_bet" : "100",
+                        }
+    return Response(bet)
 
 
 @api_view(['POST'])

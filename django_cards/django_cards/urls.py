@@ -43,6 +43,7 @@ router.register(r'users', UserViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^admin/', admin.site.urls),
+    url(r'^getAiBet$', coinche_views.getAiBet),
     url(r'^getRules$', coinche_views.getRules),
     url(r'^getListCards$', coinche_views.getListCards),
     url(r'^getCard$', coinche_views.getCard),
