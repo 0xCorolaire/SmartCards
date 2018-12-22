@@ -1,1 +1,1 @@
-PASSWORD = 'afer1626jou'
+PASSWORD = ''

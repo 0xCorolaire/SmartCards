@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^getCard$', coinche_views.getCard),
     url(r'^getGameHands$', coinche_views.getGameHands),
     url(r'^sendResultGame$', coinche_views.sendResultGame),
+    url(r'^getHandInPhoto$', detector_views.getHandInPhoto),
     url(r'^getCardsInPhoto$', detector_views.getCardsInPhoto),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
