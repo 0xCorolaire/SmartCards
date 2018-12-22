@@ -22,12 +22,27 @@ from rest_framework import routers, serializers, viewsets
 from rest_framework import routers, serializers, viewsets
 from detector import views as detector_views
 from coinche import views as coinche_views
-
+from django_cards import views as system_view
 # Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'is_staff')
+
+class UserSerializer:
+    @classmethod
+    def get_user_as_dict(cls, user):
+        if user is None:
+            return dict(username=None, elo=None, credit=None, total_played=None, total_win=None, total_lost=None)
+        return {
+            'username':user.username,
+            'elo': user.elo,
+            'credit': user.credit,
+            'total_played': user.total_played,
+            'total_win': user.total_win,
+            'total_lost': user.total_lost
+        }
+    @classmethod
+    def get_info_from_user(cls, user, fields):
+        user_as_dict = cls.get_user_as_dict(user)
+        return { attr: user_as_dict[attr] for attr in fields }
+
 
 # ViewSets define the view behavior.
 class UserViewSet(viewsets.ModelViewSet):
@@ -55,5 +70,7 @@ urlpatterns = [
     url(r'^sendResultGame$', coinche_views.sendResultGame),
     url(r'^getHandInPhoto$', detector_views.getHandInPhoto),
     url(r'^getCardsInPhoto$', detector_views.getCardsInPhoto),
+    url(r'^connexion$', system_view.connexion_api),
+    url(r'^register$', system_view.register_api),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
