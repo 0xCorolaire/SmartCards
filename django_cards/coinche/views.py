@@ -14,6 +14,8 @@ from .models import (ListCards, Rules, GameLog, TeamOpponent, TeamPersonnal, Bet
 from django.core import serializers
 from django.forms.models import model_to_dict
 import random
+from random import randint
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 """
 Note globale pour ce fichier :
@@ -56,118 +58,365 @@ class ListCardsView(models.DjongoManager):
         cards = ListCards.objects.all()
         return cards
 
+"""
+Fonction utiles
+"""
 
+def canPlayList(body):
+    cards_played = body['cards_played']
+    remaining_cards = body['remaining_cards']
+    opening_color = body['opening_color']
+    atout = body['atout']
+    can_play = []
+    cards_atout = []
+    order_no_a = ['7','8','9','J','Q','K','10','A']
+    order_a = ['7','8','Q','K','10','A','9','J']
+    if cards_played:
+        if opening_color == atout:
+            for x in remaining_cards:
+                if opening_color in x['card_name']:
+                    cards_atout.append(x)
+            if not cards_atout:
+                can_play=remaining_cards
+            else:
+                max=0
+                if len(cards_played)==1:
+                    max=order_a.index(cards_played[0]['id'])
+                    for e in cards_atout:
+                        if order_a.index(e['id']) > max:
+                            can_play.append(e)
+                    if not can_play:
+                        can_play=cards_atout
+                elif len(cards_played)==2:
+                    max = order_a.index(cards_played[0]['id'])
+                    if atout in cards_played[1]['id']:
+                        if order_a.index(cards_played[1]['id']) > max :
+                            max = order_a.index(cards_played[1]['id'])
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+                        else:
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+                    else:
+                        for e in cards_atout:
+                            if order_a.index(e['id']) > max:
+                                can_play.append(e)
+                        if not can_play:
+                            can_play=cards_atout
+                else:
+                    max = order_a.index(cards_played[0]['id'])
+                    if atout in cards_played[1]['card_name']:
+                        if order_a.index(cards_played[1]['id']) > max :
+                            max = order_a.index(cards_played[1]['id'])
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                                else:
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                            else:
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                        else:
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                                else:
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                            else:
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                    else:
+                        if atout in cards_played[2]['card_name']:
+                            if order_a.index(cards_played[2]['id']) > max :
+                                max = order_a.index(cards_played[2]['id'])
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                            else:
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                        else:
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+        else:
+            for x in remaining_cards:
+                if opening_color in x['card_name']:
+                    can_play.append(x)
+            if not can_play:
+                i=0
+                for x in remaining_cards:
+                    if atout in x['card_name']:
+                        i+=1
+                        cards_atout.append(x)
+                if i==0:
+                    can_play=remaining_cards
+                else:
+                    # Le joueur possede un atout, il faut regarder qui est maître
+                    if len(cards_played)==3:
+                        max=0
+                        if atout in cards_played[1]['card_name']:
+                            max = order_a.index(cards_played[1]['id'])
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                                else:
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                            else:
+                                can_play=remaining_cards
+                        else:
+                            if atout in cards_played[2]['card_name']:
+                                max = order_a.index(cards_played[2]['id'])
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                            else:
+                                if order_no_a.index(cards_played[2]['id'])<order_no_a.index(cards_played[1]['id']) and order_no_a.index(cards_played[1]['id']) >order_no_a.index(cards_played[0]['id']):
+                                    can_play=remaining_cards
+                                else:
+                                    can_play=cards_atout
+                    elif len(cards_played)==1:
+                        can_play=cards_atout
+                    else:
+                        max=0
+                        if atout in cards_played[1]['card_name']:
+                            max = order_a.index(cards_played[1]['id'])
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+                        else:
+                            if order_no_a.index(cards_played[1]['id'])<order_no_a.index(cards_played[0]['id']):
+                                can_play=remaining_cards
+                            else:
+                                can_play=cards_atout
+    else:
+        can_play=remaining_cards
+    return can_play
+
+
+def isWinning(card,cards_played,atout):
+    order_no_a = ['7','8','9','J','Q','K','10','A']
+    order_a = ['7','8','Q','K','10','A','9','J']
+    winning = 0
+    if cards_played:
+        #Si on joue à l'atout
+        if cards_played[0]['id'] == atout:
+            if cards_played[0]['id'] in card['card_name']:
+                max=0
+                if len(cards_played)==1:
+                    max=order_a.index(cards_played[0]['id'])
+                    if order_a.index(card['id']) > max:
+                        winning=1
+                    else:
+                        winning=-1
+                elif len(cards_played)==2:
+                    max = order_a.index(cards_played[0]['id'])
+                    if atout in cards_played[1]['id']:
+                        if order_a.index(cards_played[1]['id']) > max :
+                            max = order_a.index(cards_played[1]['id'])
+                            if order_a.index(card['id']) > max:
+                                winning=1
+                            else:
+                                winning=-1
+                        else:
+                            winning=1
+                    else:
+                        winning=1
+                else:
+                    max = order_a.index(cards_played[0]['id'])
+                    if atout in cards_played[1]['card_name']:
+                        if order_a.index(cards_played[1]['id']) > max :
+                            max = order_a.index(cards_played[1]['id'])
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    if order_a.index(card['id']) > max:
+                                        winning=1
+                                    else:
+                                        winning=-1
+                            else:
+                                winning=1
+                        else:
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    if order_a.index(card['id']) > max:
+                                        winning=1
+                                    else:
+                                        winning=-1
+                            else:
+                                if order_a.index(card['id']) > max:
+                                    winning=1
+                                else:
+                                    winning=-1
+                    else:
+                        if atout in cards_played[2]['card_name']:
+                            if order_a.index(cards_played[2]['id']) > max :
+                                max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(card['id']) > max:
+                                    winning=1
+                                else:
+                                    winning=-1
+                        else:
+                            if order_a.index(card['id']) > max:
+                                winning=1
+                            else:
+                                winning=-1
+            else:
+                winning=-1
+        # on ne joue pas à l'atout
+        else:
+            if len(cards_played)==3:
+                max=0
+                if atout in cards_played[1]['card_name']:
+                    max = order_a.index(cards_played[1]['id'])
+                    if atout in cards_played[2]['card_name']:
+                        if order_a.index(cards_played[2]['id']) > max :
+                            max = order_a.index(cards_played[2]['id'])
+                            if atout in card['card_name']:
+                                if order_a.index(card['id']) > max:
+                                    winning=1
+                                else:
+                                    winning=-1
+                            else:
+                                winning=-1
+                        else:
+                            winning=1
+                    else:
+                        winning=1
+                else:
+                    if atout in cards_played[2]['card_name']:
+                        max = order_a.index(cards_played[2]['id'])
+                        if atout in card['card_name']:
+                            if order_a.index(card['id']) > max:
+                                winning=1
+                            else:
+                                winning=-1
+                        else:
+                            winning=-1
+                    else:
+                        if order_no_a.index(cards_played[2]['id'])<order_no_a.index(cards_played[1]['id']) and order_no_a.index(cards_played[1]['id']) >order_no_a.index(cards_played[0]['id']):
+                            winning=1
+                        else:
+                            if order_no_a.index(cards_played[2]['id'])<order_no_a.index(card['id']) and order_no_a.index(card['id']) >order_no_a.index(cards_played[0]['id']):
+                                winning=1
+                            else:
+                                winning=-1
+            elif len(cards_played)==1:
+                if order_no_a.index(cards_played[0]['id'])<order_no_a.index(card['id']):
+                    winning=1
+                else:
+                    winning=-1
+            else:
+                max=0
+                if atout in cards_played[1]['card_name']:
+                    max = order_a.index(cards_played[1]['id'])
+                    if atout in card['card_name']:
+                        if order_a.index(card['id']) > max:
+                            winning=1
+                        else:
+                            winning=-1
+                    else:
+                        winning=-1
+                else:
+                    if order_no_a.index(cards_played[1]['id'])<order_no_a.index(cards_played[0]['id']):
+                        winning=1
+                    else:
+                        winning=-1
+    else:
+        winning=1
+
+    return winning
+
+def DecisionMinMax(cards_played,atout,list_possibilities):
+#Décide du meilleur coup à jouer
+    valeur=[]
+    best_move = []
+    move_lost = []
+    for x in list_possibilities:
+        valeur.append(MinMaxAlgo(x,cards_played,atout))
+    i=0
+    for e in valeur:
+        if e == 1:
+            best_move.append(list_possibilities[i])
+            i+=1
+        else:
+            move_lost.append(list_possibilities[i])
+            i+=1
+    card_to_play = []
+    if best_move:
+        indiceW = randint(0, len(best_move)-1) if len(best_move)> 1 else 0
+        card_to_play.append(best_move[indiceW])
+    else:
+        card_to_play.append(move_lost[0])
+        for x in move_lost:
+            if x['value_non_atout']<card_to_play[0]['value_non_atout']:
+                card_to_play.pop()
+                card_to_play.append(x)
+
+    return card_to_play
+
+def MinMaxAlgo (card,cards_played,atout):
+# Calcule la valeur de e pour le joueur J selon que e EstUnEtatMax ou pas
+    if isWinning(card,cards_played,atout) == 1:
+        return 1
+    else:
+        if isWinning(card,cards_played,atout):
+            return -1
 
 """
 API Coinche
 """
-
-@api_view(['POST'])
-@renderer_classes((JSONRenderer, ))
-def sendResultGame(request):
-    """
-    Endpoint qui permet de save les log d'une manche
-    On a dans la request :
-      Pour la table GameLog
-        - team_personnal : un JSON avec
-            player_south : le nom du joueur
-            south_hand : sa liste de carte tq : 'carte1-carte2-...'
-            player_north : partenaire du joueur
-            north_hand : la main du partenaire
-            south_is_announcing_first : si le joueur a annoncé en premier
-            north_is_announcing_first : meme chose
-        - team_opponent : Un JSON comme pour la team personnal
-        - final_bettor : l'annonceur final !
-        - points_done : Le nombre de points effectué !
-        - has_won : 0 ou 1 si le joueur a perdu ou gagné !
-      Pour la table Bet, chacune des annonces :
-        - bettor : le parieur
-        - type_bet : type de l'annonce ( TA, couleur..)
-        - value_bet : Valeur de l'annonce
-        - order_of_bet : l'ordre du bet
-        - game_id : l'id de la game
-        Ex :
-        request :
-        {	"has_won" : "1",
-        	"points_done" : "160",
-        	"final_bettor" : "South",
-        	"team_personnal" : {
-        		"player_south" : "Player",
-        		"south_hand" : "Js-9s-As-8c-Kc-Qd-9d-7d",
-        		"player_north" : "Bot",
-        		"north_hand" : "7s-Qs-Ah-9h-7h-Jd-Jc-Qc",
-        		"south_is_announcing_first" : "1",
-        		"north_is_announcing_first" : "0"
-        	},
-        	"team_opponent" : {
-        		"player_south" : "Bot",
-        		"south_hand" : "Js-9s-As-8c-Kc-Qd-9d-7d",
-        		"player_north" : "Bot",
-        		"north_hand" : "7s-Qs-Ah-9h-7h-Jd-Jc-Qc",
-        		"south_is_announcing_first" : "0",
-        		"north_is_announcing_first" : "0"
-        	},
-        	"list_bet" : [
-        		{
-        			"bettor" : "South",
-        			"type_bet" : "D",
-        			"value_bet" : "80",
-        			"order_of_bet" : "1"
-        		},
-        		{
-        			"bettor" : "North",
-        			"type_bet" : "D",
-        			"value_bet" : "90",
-        			"order_of_bet" : "3"
-        		}
-        	]
-        }
-    """
-    body = json.loads(request.body)
-    has_won_i = body['has_won']
-    points_done_i = body['points_done']
-    final_bettor_i = body['final_bettor']
-    team_personnal_i = body['team_personnal']
-    team_opponent_i = body['team_opponent']
-    game_log_instance = GameLog.objects.create(
-        final_bettor=final_bettor_i,
-        points_done=points_done_i,
-        has_won=has_won_i
-    )
-    # On récupere le log crée
-    id_added_game = GameLog.objects.all()[GameLog.objects.count()-1]
-    team_personnal_instance = TeamPersonnal.objects.create(
-        player_south=team_personnal_i['player_south'],
-        south_hand=team_personnal_i['south_hand'],
-        player_north=team_personnal_i['player_north'],
-        north_hand=team_personnal_i['north_hand'],
-        south_is_announcing_first=team_personnal_i['south_is_announcing_first'],
-        north_is_announcing_first=team_personnal_i['north_is_announcing_first'],
-        game_id=id_added_game
-    )
-    team_opponent_instance = TeamOpponent.objects.create(
-        player_east=team_opponent_i['player_east'],
-        east_hand=team_opponent_i['east_hand'],
-        player_west=team_opponent_i['player_west'],
-        west_hand=team_opponent_i['west_hand'],
-        east_is_announcing_first=team_opponent_i['east_is_announcing_first'],
-        west_is_announcing_first=team_opponent_i['west_is_announcing_first'],
-        game_id=id_added_game
-    )
-    #On insere les bets en bulk
-    list_bet = body['list_bet']
-    bets = [
-        Bet(
-            bettor=e['bettor'],
-            type_bet=e['type_bet'],
-            value_bet=e['value_bet'],
-            order_of_bet=e['order_of_bet'],
-            game_id=id_added_game,
-        )
-        for e in list_bet
-    ]
-    bets_instances = Bet.objects.bulk_create(bets)
-    return Response(True)
 
 @api_view(['GET'])
 @renderer_classes((JSONRenderer, ))
@@ -178,6 +427,28 @@ def getRules(request):
     rules =Rules.objects.all().values('type_announce','total_point')
     return Response(rules)
 
+@api_view(['GET'])
+@renderer_classes((JSONRenderer, ))
+def getListCards(request):
+    """
+    Endo=point qui permet d'avoir la liste totale de la coinche avec ses valeurs
+    """
+    cards =ListCards.objects.all().values('card_name','value_non_atout','value_atout')
+
+    return Response(cards)
+
+@api_view(['POST'])
+@renderer_classes((JSONRenderer, ))
+def getCard(request):
+    """
+    Endpoint qui permet d'avoir une seule carte avec sa valeur
+    """
+    body = json.loads(request.body)
+    name = body['name']
+    card = ListCards.objects.filter(
+            card_name = name
+        ).values('card_name','value_non_atout','value_atout')
+    return Response(card)
 
 @api_view(['POST'])
 @renderer_classes((JSONRenderer, ))
@@ -416,26 +687,486 @@ def getAiBet(request):
                         }
     return Response(bet)
 
+@api_view(['POST'])
+@renderer_classes((JSONRenderer, ))
+def canPlay(request):
+    """
+    Endpoint qui retourne la liste des cartes qui peuvent être jouées ( pour le Player )
+    rq : {
+        "cards_played" : [
+            {
+                    "card_name": "As",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id" : "A"
+            },
+            {
+                    "card_name": "7s",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id" : "7"
+            },
+            {
+                    "card_name": "8s",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id" : "8"
+            }
+        ],
+        "atout" : "c",
+        "opening_color" : "s",
+        "remaining_cards": [
+            {
+                "card_name": "7d",
+                "value_non_atout": 0,
+                "value_atout": 0,
+                "id":"7"
+            },
+            {
+                "card_name": "Kh",
+                "value_non_atout": 4,
+                "value_atout": 4,
+                "id":"K"
+            },
+            {
+                "card_name": "Ks",
+                "value_non_atout": 4,
+                "value_atout": 4,
+                "id":"K"
+            },
+            {
+                "card_name": "Ac",
+                "value_non_atout": 11,
+                "value_atout": 11,
+                "id":"A"
+            },
+            {
+                "card_name": "9c",
+                "value_non_atout": 0,
+                "value_atout": 14,
+                "id":"9"
+            }
+        ]
+    }
+    """
+    body = json.loads(request.body)
+    cards_played = body['cards_played']
+    remaining_cards = body['remaining_cards']
+    opening_color = body['opening_color']
+    atout = body['atout']
+    can_play = []
+    cards_atout = []
+    order_no_a = ['7','8','9','J','Q','K','10','A']
+    order_a = ['7','8','Q','K','10','A','9','J']
+    if cards_played:
+        if opening_color == atout:
+            for x in remaining_cards:
+                if opening_color in x['card_name']:
+                    cards_atout.append(x)
+            if not cards_atout:
+                can_play=remaining_cards
+            else:
+                max=0
+                if len(cards_played)==1:
+                    max=order_a.index(cards_played[0]['id'])
+                    for e in cards_atout:
+                        if order_a.index(e['id']) > max:
+                            can_play.append(e)
+                    if not can_play:
+                        can_play=cards_atout
+                elif len(cards_played)==2:
+                    max = order_a.index(cards_played[0]['id'])
+                    if atout in cards_played[1]['id']:
+                        if order_a.index(cards_played[1]['id']) > max :
+                            max = order_a.index(cards_played[1]['id'])
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+                        else:
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+                    else:
+                        for e in cards_atout:
+                            if order_a.index(e['id']) > max:
+                                can_play.append(e)
+                        if not can_play:
+                            can_play=cards_atout
+                else:
+                    max = order_a.index(cards_played[0]['id'])
+                    if atout in cards_played[1]['card_name']:
+                        if order_a.index(cards_played[1]['id']) > max :
+                            max = order_a.index(cards_played[1]['id'])
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                                else:
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                            else:
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                        else:
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                                else:
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                            else:
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                    else:
+                        if atout in cards_played[2]['card_name']:
+                            if order_a.index(cards_played[2]['id']) > max :
+                                max = order_a.index(cards_played[2]['id'])
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                            else:
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                        else:
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+        else:
+            for x in remaining_cards:
+                if opening_color in x['card_name']:
+                    can_play.append(x)
+            if not can_play:
+                i=0
+                for x in remaining_cards:
+                    if atout in x['card_name']:
+                        i+=1
+                        cards_atout.append(x)
+                if i==0:
+                    can_play=remaining_cards
+                else:
+                    # Le joueur possede un atout, il faut regarder qui est maître
+                    if len(cards_played)==3:
+                        max=0
+                        if atout in cards_played[1]['card_name']:
+                            max = order_a.index(cards_played[1]['id'])
+                            if atout in cards_played[2]['card_name']:
+                                if order_a.index(cards_played[2]['id']) > max :
+                                    max = order_a.index(cards_played[2]['id'])
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                                else:
+                                    for e in cards_atout:
+                                        if order_a.index(e['id']) > max:
+                                            can_play.append(e)
+                                    if not can_play:
+                                        can_play=cards_atout
+                            else:
+                                can_play=remaining_cards
+                        else:
+                            if atout in cards_played[2]['card_name']:
+                                max = order_a.index(cards_played[2]['id'])
+                                for e in cards_atout:
+                                    if order_a.index(e['id']) > max:
+                                        can_play.append(e)
+                                if not can_play:
+                                    can_play=cards_atout
+                            else:
+                                if order_no_a.index(cards_played[2]['id'])<order_no_a.index(cards_played[1]['id']) and order_no_a.index(cards_played[1]['id']) >order_no_a.index(cards_played[0]['id']):
+                                    can_play=remaining_cards
+                                else:
+                                    can_play=cards_atout
+                    elif len(cards_played)==1:
+                        can_play=cards_atout
+                    else:
+                        max=0
+                        if atout in cards_played[1]['card_name']:
+                            max = order_a.index(cards_played[1]['id'])
+                            for e in cards_atout:
+                                if order_a.index(e['id']) > max:
+                                    can_play.append(e)
+                            if not can_play:
+                                can_play=cards_atout
+                        else:
+                            if order_no_a.index(cards_played[1]['id'])<order_no_a.index(cards_played[0]['id']):
+                                can_play=remaining_cards
+                            else:
+                                can_play=cards_atout
+    else:
+        can_play=remaining_cards
+    return Response(can_play)
 
 @api_view(['POST'])
 @renderer_classes((JSONRenderer, ))
-def getCard(request):
+def getAiRandomMove(request):
     """
-    Endpoint qui permet d'avoir une seule carte avec sa valeur
+    Endpoint qui permet d'obtenir un move d'un Ai random (nul)
     """
     body = json.loads(request.body)
-    name = body['name']
-    card = ListCards.objects.filter(
-            card_name = name
-        ).values('card_name','value_non_atout','value_atout')
+    cards_played = body['cards_played']
+    remaining_cards = body['remaining_cards']
+    list_possibilities = canPlayList(body)
+    indice = randint(0, len(list_possibilities)-1) if len(list_possibilities)> 1 else 0
+    card= list_possibilities[indice]
+
     return Response(card)
 
-@api_view(['GET'])
+@api_view(['POST'])
 @renderer_classes((JSONRenderer, ))
-def getListCards(request):
+def getAiNormalMove(request):
     """
-    Endo=point qui permet d'avoir la liste totale de la coinche avec ses valeurs
+    Endpoint qui permet d'obtenir un move d'un Ai normal basé sur un algo MinMax avec une heuristique assez satisfaisante
     """
-    cards =ListCards.objects.all().values('card_name','value_non_atout','value_atout')
+    body = json.loads(request.body)
+    cards_played = body['cards_played']
+    atout=body['atout']
+    remaining_cards = body['remaining_cards']
+    list_possibilities = canPlayList(body)
+    card = DecisionMinMax(cards_played,atout,list_possibilities)
 
-    return Response(cards)
+    return Response(card)
+
+@api_view(['POST'])
+@renderer_classes((JSONRenderer, ))
+def evaluateFold(request):
+    """
+    Endpoint qui permet d'évaluer le gagnant d'un pli de 4 cartes dans l'ordre de jeu avec comme request :
+    {
+        "atout" : "C"
+        "cards_in_fold" : [
+            {
+                "played_by" : "South",
+                "card_name" : "J",
+                "card_color" : "c",
+                "value": "20",
+                "is_atout" : "True"
+            },{
+                "played_by" : "East",
+                "card_name" : "9",
+                "card_color" : "c",
+                "value": "14",
+                "is_atout" : "True"
+            },{
+                "played_by" : "North",
+                "card_name" : "7",
+                "card_color" : "c",
+                "value": "0",
+                "is_atout" : "True"
+            },{
+                "played_by" : "West",
+                "card_name" : "8",
+                "card_color" : "h",
+                "value": "0",
+                "is_atout" : "False"
+            }
+        ]
+    }
+    """
+    order_no_a = ['7','8','9','J','Q','K','10','A']
+    order_a = ['7','8','Q','K','10','A','9','J']
+    body = json.loads(request.body)
+    atout = body['atout']
+    cards_in_fold = body['cards_in_fold']
+    tab = [cards_in_fold[0],cards_in_fold[1],cards_in_fold[2],cards_in_fold[3]]
+    winner = tab[0]
+    if atout in tab[0]['card_color']:
+        # on joue à l'atout
+        if order_a.index(tab[0]['card_name']) < order_a.index(tab[1]['card_name']) and tab[1]['is_atout']=='True':
+            winner = tab[1]
+            if order_a.index(winner['card_name']) < order_a.index(tab[2]['card_name']) and tab[2]['is_atout']=='True':
+                winner = tab[2]
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+            else:
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+        else:
+            if order_a.index(winner['card_name']) < order_a.index(tab[2]['card_name']) and tab[2]['is_atout']=='True':
+                winner = tab[2]
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+            else:
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+    else:
+        if order_no_a.index(tab[0]['card_name']) < order_no_a.index(tab[1]['card_name']) and tab[1]['is_atout']=='False':
+            winner = tab [1]
+            if order_no_a.index(winner['card_name']) < order_no_a.index(tab[2]['card_name']) and tab[2]['is_atout']=='False':
+                winner = tab[2]
+                if order_no_a.index(winner['card_name']) < order_no_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='False':
+                    winner = tab[3]
+                elif tab[3]['is_atout']=='True':
+                    winner = tab[3]
+            elif tab[2]['is_atout']=='True':
+                winner = tab[2]
+                # 2 atout
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+        elif tab[1]['is_atout']=='True':
+            winner = tab[1]
+            # 1 atout
+            if order_a.index(winner['card_name']) < order_a.index(tab[2]['card_name']) and tab[2]['is_atout']=='True':
+                winner = tab[2]
+                # 2 is_atout
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+        else:
+            if order_no_a.index(tab[0]['card_name']) < order_no_a.index(tab[2]['card_name']) and tab[2]['is_atout']=='False':
+                winner = tab[2]
+                if order_no_a.index(winner['card_name']) < order_no_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='False':
+                    winner = tab[3]
+                elif tab[3]['is_atout']=='True':
+                    winner = tab[3]
+            elif tab[2]['is_atout']=='True':
+                winner = tab[2]
+                # 2 atout
+                if order_a.index(winner['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='True':
+                    winner = tab[3]
+            else:
+                if order_no_a.index(tab[0]['card_name']) < order_a.index(tab[3]['card_name']) and tab[3]['is_atout']=='False':
+                    winner = tab[3]
+                elif tab[3]['is_atout']=='True':
+                    winner = tab[3]
+
+    return Response(winner)
+
+@api_view(['POST'])
+@renderer_classes((JSONRenderer, ))
+def sendResultGame(request):
+    """
+    Endpoint qui permet de save les log d'une manche
+    On a dans la request :
+      Pour la table GameLog
+        - team_personnal : un JSON avec
+            player_south : le nom du joueur
+            south_hand : sa liste de carte tq : 'carte1-carte2-...'
+            player_north : partenaire du joueur
+            north_hand : la main du partenaire
+            south_is_announcing_first : si le joueur a annoncé en premier
+            north_is_announcing_first : meme chose
+        - team_opponent : Un JSON comme pour la team personnal
+        - final_bettor : l'annonceur final !
+        - points_done : Le nombre de points effectué !
+        - has_won : 0 ou 1 si le joueur a perdu ou gagné !
+      Pour la table Bet, chacune des annonces :
+        - bettor : le parieur
+        - type_bet : type de l'annonce ( TA, couleur..)
+        - value_bet : Valeur de l'annonce
+        - order_of_bet : l'ordre du bet
+        - game_id : l'id de la game
+        Ex :
+        request :
+        {	"has_won" : "1",
+        	"points_done" : "160",
+        	"final_bettor" : "South",
+        	"team_personnal" : {
+        		"player_south" : "Player",
+        		"south_hand" : "Js-9s-As-8c-Kc-Qd-9d-7d",
+        		"player_north" : "Bot",
+        		"north_hand" : "7s-Qs-Ah-9h-7h-Jd-Jc-Qc",
+        		"south_is_announcing_first" : "1",
+        		"north_is_announcing_first" : "0"
+        	},
+        	"team_opponent" : {
+        		"player_south" : "Bot",
+        		"south_hand" : "Js-9s-As-8c-Kc-Qd-9d-7d",
+        		"player_north" : "Bot",
+        		"north_hand" : "7s-Qs-Ah-9h-7h-Jd-Jc-Qc",
+        		"south_is_announcing_first" : "0",
+        		"north_is_announcing_first" : "0"
+        	},
+        	"list_bet" : [
+        		{
+        			"bettor" : "South",
+        			"type_bet" : "D",
+        			"value_bet" : "80",
+        			"order_of_bet" : "1"
+        		},
+        		{
+        			"bettor" : "North",
+        			"type_bet" : "D",
+        			"value_bet" : "90",
+        			"order_of_bet" : "3"
+        		}
+        	]
+        }
+    """
+    body = json.loads(request.body)
+    has_won_i = body['has_won']
+    points_done_i = body['points_done']
+    final_bettor_i = body['final_bettor']
+    team_personnal_i = body['team_personnal']
+    team_opponent_i = body['team_opponent']
+    game_log_instance = GameLog.objects.create(
+        final_bettor=final_bettor_i,
+        points_done=points_done_i,
+        has_won=has_won_i
+    )
+    # On récupere le log crée
+    id_added_game = GameLog.objects.all()[GameLog.objects.count()-1]
+    team_personnal_instance = TeamPersonnal.objects.create(
+        player_south=team_personnal_i['player_south'],
+        south_hand=team_personnal_i['south_hand'],
+        player_north=team_personnal_i['player_north'],
+        north_hand=team_personnal_i['north_hand'],
+        south_is_announcing_first=team_personnal_i['south_is_announcing_first'],
+        north_is_announcing_first=team_personnal_i['north_is_announcing_first'],
+        game_id=id_added_game
+    )
+    team_opponent_instance = TeamOpponent.objects.create(
+        player_east=team_opponent_i['player_east'],
+        east_hand=team_opponent_i['east_hand'],
+        player_west=team_opponent_i['player_west'],
+        west_hand=team_opponent_i['west_hand'],
+        east_is_announcing_first=team_opponent_i['east_is_announcing_first'],
+        west_is_announcing_first=team_opponent_i['west_is_announcing_first'],
+        game_id=id_added_game
+    )
+    #On insere les bets en bulk
+    list_bet = body['list_bet']
+    bets = [
+        Bet(
+            bettor=e['bettor'],
+            type_bet=e['type_bet'],
+            value_bet=e['value_bet'],
+            order_of_bet=e['order_of_bet'],
+            game_id=id_added_game,
+        )
+        for e in list_bet
+    ]
+    bets_instances = Bet.objects.bulk_create(bets)
+    return Response(True)
