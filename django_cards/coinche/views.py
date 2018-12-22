@@ -935,6 +935,63 @@ def canPlay(request):
 def getAiRandomMove(request):
     """
     Endpoint qui permet d'obtenir un move d'un Ai random (nul)
+    ex :
+    {
+        "cards_played" : [
+            {
+                    "card_name": "Ks",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id": "K"
+            },
+            {
+                    "card_name": "As",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id": "A"
+            },
+            {
+                    "card_name": "8s",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id": "s"
+            }
+        ],
+        "atout" : "h",
+        "opening_color" : "s",
+        "remaining_cards": [
+            {
+                "card_name": "Ah",
+                "value_non_atout": 0,
+                "value_atout": 0,
+                "id": "A"
+            },
+            {
+                "card_name": "8h",
+                "value_non_atout": 4,
+                "value_atout": 4,
+                "id": "8"
+            },
+            {
+                "card_name": "Kd",
+                "value_non_atout": 4,
+                "value_atout": 4,
+                "id": "K"
+            },
+            {
+                "card_name": "Ac",
+                "value_non_atout": 11,
+                "value_atout": 11,
+                "id": "A"
+            },
+            {
+                "card_name": "10s",
+                "value_non_atout": 0,
+                "value_atout": 14,
+                "id": "10"
+            }
+        ]
+    }
     """
     body = json.loads(request.body)
     cards_played = body['cards_played']
@@ -950,6 +1007,62 @@ def getAiRandomMove(request):
 def getAiNormalMove(request):
     """
     Endpoint qui permet d'obtenir un move d'un Ai normal basé sur un algo MinMax avec une heuristique assez satisfaisante
+    ex : {
+        "cards_played" : [
+            {
+                    "card_name": "Ks",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id": "K"
+            },
+            {
+                    "card_name": "As",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id": "A"
+            },
+            {
+                    "card_name": "8h",
+                    "value_non_atout": 0,
+                    "value_atout": 0,
+                    "id": "8"
+            }
+        ],
+        "atout" : "h",
+        "opening_color" : "s",
+        "remaining_cards": [
+            {
+                "card_name": "Ad",
+                "value_non_atout": 11,
+                "value_atout": 11,
+                "id": "A"
+            },
+            {
+                "card_name": "8d",
+                "value_non_atout": 0,
+                "value_atout": 0,
+                "id": "8"
+            },
+            {
+                "card_name": "Kd",
+                "value_non_atout": 4,
+                "value_atout": 4,
+                "id": "K"
+            },
+            {
+                "card_name": "Ac",
+                "value_non_atout": 11,
+                "value_atout": 11,
+                "id": "A"
+            },
+            {
+                "card_name": "10c",
+                "value_non_atout": 10,
+                "value_atout": 10,
+                "id": "10"
+            }
+        ]
+    }
     """
     body = json.loads(request.body)
     cards_played = body['cards_played']
