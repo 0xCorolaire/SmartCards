@@ -33,7 +33,6 @@ def register_api(request):
         user = Us.objects.create(username=username,password=password,email=email,elo=2000,credit=500,total_played=0,total_win=0,total_lost=0)
     return Response(True)
 
-
 @api_view(['POST'])
 @renderer_classes((JSONRenderer, ))
 def connexion_api(request):
@@ -43,7 +42,7 @@ def connexion_api(request):
     body=json.loads(request.body)
     username=body['username']
     password=body['password']
-    user = authenticate(username=username,password=password)
+    user = Us.objects.get(username=username)
     if user:
         return Response(True)
     else:
