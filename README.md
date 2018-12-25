@@ -59,6 +59,7 @@ pip install --requirements.txt
 ```
 python migrate.py makemigrations
 python migrate.py migrate
+sudo mongod
 python migrate.py runserver
 ```
 
