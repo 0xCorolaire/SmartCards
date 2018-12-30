@@ -14,9 +14,21 @@ This project is using
 
 ---
 
+
+1. [Creating a Playing Card Dataset](https://github.com/hugofloter/SmartCards#creating-a-playing-card-dataset)
+2. [Train](https://github.com/hugofloter/SmartCards#train-cards-with-yolov3-and-the-generated-datasets)
+3. [Creation of the API](https://github.com/hugofloter/SmartCards#create-the-api-to-detect-cards-and-cards_games-datas)
+4. [Doc of the API](https://github.com/hugofloter/SmartCards#api-doc-)
+5. [Creating the app](https://github.com/hugofloter/SmartCards#creating-datas-with-the-card-detector-application)
+
+https://github.com/hugofloter/SmartCards#api-doc-
+
+
 # Card detector
 
 ## Creating a playing card dataset
+
+Credit to geaxgx
 
 ```
 jupyter notebook object_detection_tutorial.ipynb
