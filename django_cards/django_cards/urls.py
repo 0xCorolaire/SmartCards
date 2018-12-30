@@ -68,7 +68,6 @@ urlpatterns = [
     url(r'^getCard$', coinche_views.getCard),
     url(r'^getGameHands$', coinche_views.getGameHands),
     url(r'^sendResultGame$', coinche_views.sendResultGame),
-    url(r'^getHandInPhoto$', detector_views.getHandInPhoto),
     url(r'^getCardsInPhoto$', detector_views.getCardsInPhoto),
     url(r'^connexion$', system_view.connexion_api),
     url(r'^register$', system_view.register_api),
