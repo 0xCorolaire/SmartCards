@@ -50,10 +50,10 @@ Check YOLO ipny and complete the setup indicated in the file
 ## C. result
 here are the result at step 170k
 
-![alt text](https://github.com/hugofloter/SmartCards/tree/master/Card_detector/data/result1.jpg)
-![alt text](https://github.com/hugofloter/SmartCards/tree/master/Card_detector/data/result3.jpg)
-![alt text](https://github.com/hugofloter/SmartCards/tree/master/Card_detector/data/result2.jpg)
-![alt text](https://github.com/hugofloter/SmartCards/tree/master/Card_detector/data/result4.jpg)
+![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result3.jpg)
+![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result1.jpg)
+![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result2.jpg)
+![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result4.jpg)
 
 
 # Create the API to detect cards and cards_games datas
