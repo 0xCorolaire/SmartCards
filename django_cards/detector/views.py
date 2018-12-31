@@ -59,8 +59,8 @@ def getCardsInPhoto(request):
     image = Image.open(photo)
     image.thumbnail([720, 720], Image.ANTIALIAS)
     id_img = randint(1,10000)
-    image.save('/home/ubuntu/images/cards_to_analyze'+id_img+'.jpg')
-    data = { 'id_img' : id_img}
+    image.save('/home/ubuntu/images/cards_to_analyze'+str(id_img)+'.jpg')
+    data = { 'id_img' : str(id_img)}
     url = API_URL+'/predict'
     r = requests.post(url = url, data = data)
 
