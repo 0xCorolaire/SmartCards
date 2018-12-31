@@ -68,4 +68,4 @@ def getCardsInPhoto(request):
         'id_img': '3307'
     })
 
-    return Response(r.json)
+    return Response(True)
