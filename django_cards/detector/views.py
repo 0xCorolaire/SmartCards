@@ -64,5 +64,8 @@ def getCardsInPhoto(request):
     data = json.dumps(data)
     url = cfg.API_URL+'/predict'
 
-
-    return Response(True)
+    r = requests.post(url, json={
+        'id_img':''+str(id_img)+''
+    })
+    
+    return Response(r.json)
