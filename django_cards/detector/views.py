@@ -67,4 +67,4 @@ def getCardsInPhoto(request):
     })
     list = r.json()
 
-    return Response({'test':'ok','r':list})
+    return Response(list)
