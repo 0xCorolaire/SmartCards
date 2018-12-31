@@ -72,6 +72,6 @@ def getCardsInPhoto(request):
         card = ListCards.objects.filter(
                 card_name = e
             ).values('card_name','value_non_atout','value_atout')
-        final_list_cards.push(card)
+        final_list_cards.append(card)
 
     return Response(final_list_cards)
