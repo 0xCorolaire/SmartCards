@@ -66,4 +66,4 @@ def getCardsInPhoto(request):
         'id_img': ''+str(id_img)+''
     })
 
-    return Response(True)
+    return Response(r.json)
