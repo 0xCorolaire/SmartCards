@@ -10,7 +10,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 import json
 from coinche import models as coinche_models
-from random import randomint
+from random import randint
 import tensorflow as tf
 from PIL import Image
 import os
