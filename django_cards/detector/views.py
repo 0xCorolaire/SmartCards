@@ -11,7 +11,7 @@ from rest_framework.response import Response
 import json
 from coinche import models as coinche_models
 from detector.object_detection import card_detection
-
+from random import randomint
 import tensorflow as tf
 from PIL import Image
 import os
@@ -57,9 +57,9 @@ def getCardsInPhoto(request):
     """
     photo = request.FILES['photo']
     image = Image.open(photo)
-    final_list_cards = card_detection.predict(image)
+    image.save('/home/ubuntu/images/'+randint(1, 10000))
 
 
     return Response({
-        'list_cartes': final_list_cards
+        'list_cartes': 'True'
     })
