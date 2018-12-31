@@ -18,6 +18,8 @@ import os
 import numpy as np
 import cv2
 import requests
+from coinche.models import (ListCards)
+
 
 """
 Note globale pour ce fichier :
@@ -61,10 +63,15 @@ def getCardsInPhoto(request):
     id_img = randint(1,10000)
     image.save('/home/ubuntu/images/cards_to_analyze'+str(id_img)+'.jpg')
     url = cfg.API_URL+'/predict'
-
     r = requests.post(url, json={
         'id_img': str(id_img)
     })
     list = r.json()
+    final_list_cards = []
+    for e in list['list_cards']:
+        card = ListCards.objects.filter(
+                card_name = e
+            ).values('card_name','value_non_atout','value_atout')
+        final_list_cards.push(card)
 
-    return Response(list)
+    return Response(final_list_cards)
