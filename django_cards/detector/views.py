@@ -10,7 +10,6 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 import json
 from coinche import models as coinche_models
-from detector.object_detection import card_detection
 from random import randomint
 import tensorflow as tf
 from PIL import Image
