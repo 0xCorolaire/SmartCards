@@ -64,7 +64,7 @@ def getCardsInPhoto(request):
 
     r = requests.post(url, json={
         'id_img': '3307'
-    })
-    list_cards = r.json()
+    }).json()
+    list_cards = r['list_cards']
 
     return Response(list_cards)
