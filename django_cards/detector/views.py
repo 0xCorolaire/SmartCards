@@ -62,8 +62,9 @@ def getCardsInPhoto(request):
     image.save('/home/ubuntu/images/cards_to_analyze'+str(id_img)+'.jpg')
     url = cfg.API_URL+'/predict'
 
-    r = requests.post(url, data={
+    r = requests.post(url, json={
         'id_img': '3307'
     })
-    
-    return Response(True)
+
+
+    return Response({'test':'ok','r':r})
