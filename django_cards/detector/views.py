@@ -10,7 +10,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 import json
 from coinche import models as coinche_models
-from django_cards import config
+from django_cards import config as cfg
 from random import randint
 import tensorflow as tf
 from PIL import Image
@@ -61,7 +61,7 @@ def getCardsInPhoto(request):
     id_img = randint(1,10000)
     image.save('/home/ubuntu/images/cards_to_analyze'+str(id_img)+'.jpg')
     data = { 'id_img' : str(id_img)}
-    url = API_URL+'/predict'
+    url = cfg.API_URL+'/predict'
     r = requests.post(url = url, data = data)
 
     return Response(r.json)
