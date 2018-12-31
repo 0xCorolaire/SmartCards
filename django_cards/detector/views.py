@@ -61,6 +61,7 @@ def getCardsInPhoto(request):
     id_img = randint(1,10000)
     image.save('/home/ubuntu/images/cards_to_analyze'+id_img+'.jpg')
     data = { 'id_img' : id_img}
-    r = requests.post(url = API_URL, data = data)
+    url = API_URL+'/predict'
+    r = requests.post(url = url, data = data)
 
     return Response(r.json)
