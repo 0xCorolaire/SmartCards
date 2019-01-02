@@ -412,6 +412,10 @@ def evaluateFold(request):
 def sendResultGame(request):
 ```
 
+- Get the prediction of the cards in a given image ( form-data ) "photo"  et le file .jpg forme carré
+```
+def getCardsInPhoto(request):
+```
 
 
 # Creating data's with the card detector application
