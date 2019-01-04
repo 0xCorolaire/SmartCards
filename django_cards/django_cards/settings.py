@@ -58,6 +58,20 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'django_cards.urls'
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+    'google.com',
+    'vps631503.ovh.net',
+    'vps631503.ovh.net:5000',
+    'vps631503.ovh.net:8000',
+    'localhost:8000',
+    'localhost:5000',
+    '127.0.0.1:8000',
+    '127.0.0.1:5000',
+)
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
