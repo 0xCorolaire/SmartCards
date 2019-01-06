@@ -514,7 +514,6 @@ def getGameHands(request):
     for s3 in  range(0,3):
         extract = cards.pop()
         SouthHand.append(extract)
-
     return Response({
         'East':EastHand,
         'North':NorthHand,
