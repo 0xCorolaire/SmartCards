@@ -601,7 +601,7 @@ def getAiBet(request):
         # on trouve la type
         if is_announcing_first=='False' and As != 0:
             if partner_bet['value_bet'] > ennemy_bet['value_bet']:
-                if lower(partner_bet['type_bet']) in card_As and As<2:
+                if partner_bet['type_bet'].lower() in card_As and As<2:
                     bet = {
                         "type_bet" : "Pass",
                         "value_bet" : "0",
