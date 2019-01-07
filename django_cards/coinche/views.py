@@ -593,7 +593,7 @@ def getAiBet(request):
     if (longe_n==(len(card_h)-1)):
         color = "h"
 
-    if partner_bet['value_bet'] != 0 and ennemy_bet['value_bet'] != 0:
+    if partner_bet['value_bet'] != '0' and ennemy_bet['value_bet'] != '0':
         is_announcing_first ='False'
     else:
         is_announcing_first ='True'
@@ -610,7 +610,7 @@ def getAiBet(request):
                     upbet= 10*As + partner_bet['value_bet']
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
-                        "value_bet" : upbet,
+                        "value_bet" : str(upbet),
                     }
             else:
                 bet = {
@@ -641,14 +641,14 @@ def getAiBet(request):
                     upbet= 10*As + int(partner_bet['value_bet'])
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
-                        "value_bet" : upbet,
+                        "value_bet" : str(upbet),
                     }
             else:
                 if (int(ennemy_bet['value_bet'])-int(partner_bet['value_bet']))<20 and As>1:
                     upbet= 10 + int(ennemy_bet['value_bet'])
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
-                        "value_bet" :upbet,
+                        "value_bet" : str(upbet),
                     }
                 else:
                     bet = {
