@@ -433,7 +433,7 @@ def getListCards(request):
     """
     Endo=point qui permet d'avoir la liste totale de la coinche avec ses valeurs
     """
-    cards =ListCards.objects.all().values('card_name','value_non_atout','value_atout','id_Categ')
+    cards =ListCards.objects.all().values('card_name','value_non_atout','value_atout','idc')
 
     return Response(cards)
 
