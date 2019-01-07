@@ -89,7 +89,7 @@ def canPlayList(body):
                         can_play=cards_atout
                 elif len(cards_played)==2:
                     max = order_a.index(cards_played[0]['id'])
-                    if atout in cards_played[1]['id']:
+                    if atout in cards_played[1]['card_name']:
                         if order_a.index(cards_played[1]['id']) > max :
                             max = order_a.index(cards_played[1]['id'])
                             for e in cards_atout:
@@ -261,7 +261,7 @@ def isWinning(card,cards_played,atout):
                         winning=-1
                 elif len(cards_played)==2:
                     max = order_a.index(cards_played[0]['id'])
-                    if atout in cards_played[1]['id']:
+                    if atout in cards_played[1]['card_name']:
                         if order_a.index(cards_played[1]['id']) > max :
                             max = order_a.index(cards_played[1]['id'])
                             if order_a.index(card['id']) > max:
@@ -775,7 +775,7 @@ def canPlay(request):
                         can_play=cards_atout
                 elif len(cards_played)==2:
                     max = order_a.index(cards_played[0]['id'])
-                    if atout in cards_played[1]['id']:
+                    if atout in cards_played[1]['card_name']:
                         if order_a.index(cards_played[1]['id']) > max :
                             max = order_a.index(cards_played[1]['id'])
                             for e in cards_atout:
