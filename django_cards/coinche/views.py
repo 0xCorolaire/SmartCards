@@ -433,7 +433,7 @@ def getListCards(request):
     """
     Endo=point qui permet d'avoir la liste totale de la coinche avec ses valeurs
     """
-    cards =ListCards.objects.all().values('card_name','value_non_atout','value_atout')
+    cards =ListCards.objects.all().values('card_name','value_non_atout','value_atout','id_Categ')
 
     return Response(cards)
 
@@ -447,7 +447,7 @@ def getCard(request):
     name = body['name']
     card = ListCards.objects.filter(
             card_name = name
-        ).values('card_name','value_non_atout','value_atout')
+        ).values('card_name','value_non_atout','value_atout','idc')
     return Response(card)
 
 @api_view(['POST'])
@@ -466,7 +466,7 @@ def getGameHands(request):
     body = json.loads(request.body)
     firstGame = body['firstGame']
     if firstGame == 'True':
-        cards = list(ListCards.objects.all().values('card_name','value_non_atout','value_atout'))
+        cards = list(ListCards.objects.all().values('card_name','value_non_atout','value_atout','idc'))
         random.shuffle(cards)
     else:
         lastGameCards = body['listLastGameCards']
