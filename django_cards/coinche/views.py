@@ -593,7 +593,7 @@ def getAiBet(request):
     if (longe_n==(len(card_h)-1)):
         color = "h"
 
-    if partner_bet['value_bet'] != '0' and ennemy_bet['value_bet'] != '0':
+    if partner_bet['value_bet'] != '0' or ennemy_bet['value_bet'] != '0':
         is_announcing_first ='False'
     else:
         is_announcing_first ='True'
@@ -665,23 +665,23 @@ def getAiBet(request):
                 else:
                     if sum < 45 :
                         bet = {
-                            "type_bet" : color,
+                            "type_bet" : color.upper(),
                             "value_bet" : "80",
                         }
                     else:
                         bet = {
-                            "type_bet" : color,
+                            "type_bet" : color.upper(),
                             "value_bet" : "90",
                         }
             else:
                 if sum > 19 and sum < 30 :
                         bet = {
-                            "type_bet" : color,
+                            "type_bet" : color.upper(),
                             "value_bet" : "90",
                         }
                 else :
                         bet = {
-                            "type_bet" : color,
+                            "type_bet" : color.upper(),
                             "value_bet" : "100",
                         }
     return Response(bet)
