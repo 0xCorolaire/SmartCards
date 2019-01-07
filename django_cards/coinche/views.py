@@ -81,98 +81,98 @@ def canPlayList(body):
             else:
                 max=0
                 if len(cards_played)==1:
-                    max=order_a.index(cards_played[0]['id'])
+                    max=order_a.index(cards_played[0]['idc'])
                     for e in cards_atout:
-                        if order_a.index(e['id']) > max:
+                        if order_a.index(e['idc']) > max:
                             can_play.append(e)
                     if not can_play:
                         can_play=cards_atout
                 elif len(cards_played)==2:
-                    max = order_a.index(cards_played[0]['id'])
+                    max = order_a.index(cards_played[0]['idc'])
                     if atout in cards_played[1]['card_name']:
-                        if order_a.index(cards_played[1]['id']) > max :
-                            max = order_a.index(cards_played[1]['id'])
+                        if order_a.index(cards_played[1]['idc']) > max :
+                            max = order_a.index(cards_played[1]['idc'])
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
                         else:
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
                     else:
                         for e in cards_atout:
-                            if order_a.index(e['id']) > max:
+                            if order_a.index(e['idc']) > max:
                                 can_play.append(e)
                         if not can_play:
                             can_play=cards_atout
                 else:
-                    max = order_a.index(cards_played[0]['id'])
+                    max = order_a.index(cards_played[0]['idc'])
                     if atout in cards_played[1]['card_name']:
-                        if order_a.index(cards_played[1]['id']) > max :
-                            max = order_a.index(cards_played[1]['id'])
+                        if order_a.index(cards_played[1]['idc']) > max :
+                            max = order_a.index(cards_played[1]['idc'])
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                                 else:
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                             else:
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                         else:
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                                 else:
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                             else:
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                     else:
                         if atout in cards_played[2]['card_name']:
-                            if order_a.index(cards_played[2]['id']) > max :
-                                max = order_a.index(cards_played[2]['id'])
+                            if order_a.index(cards_played[2]['idc']) > max :
+                                max = order_a.index(cards_played[2]['idc'])
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                             else:
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                         else:
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
@@ -193,18 +193,18 @@ def canPlayList(body):
                     if len(cards_played)==3:
                         max=0
                         if atout in cards_played[1]['card_name']:
-                            max = order_a.index(cards_played[1]['id'])
+                            max = order_a.index(cards_played[1]['idc'])
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                                 else:
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
@@ -212,14 +212,14 @@ def canPlayList(body):
                                 can_play=remaining_cards
                         else:
                             if atout in cards_played[2]['card_name']:
-                                max = order_a.index(cards_played[2]['id'])
+                                max = order_a.index(cards_played[2]['idc'])
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                             else:
-                                if order_no_a.index(cards_played[2]['id'])<order_no_a.index(cards_played[1]['id']) and order_no_a.index(cards_played[1]['id']) >order_no_a.index(cards_played[0]['id']):
+                                if order_no_a.index(cards_played[2]['idc'])<order_no_a.index(cards_played[1]['idc']) and order_no_a.index(cards_played[1]['idc']) >order_no_a.index(cards_played[0]['idc']):
                                     can_play=remaining_cards
                                 else:
                                     can_play=cards_atout
@@ -228,14 +228,14 @@ def canPlayList(body):
                     else:
                         max=0
                         if atout in cards_played[1]['card_name']:
-                            max = order_a.index(cards_played[1]['id'])
+                            max = order_a.index(cards_played[1]['idc'])
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
                         else:
-                            if order_no_a.index(cards_played[1]['id'])<order_no_a.index(cards_played[0]['id']):
+                            if order_no_a.index(cards_played[1]['idc'])<order_no_a.index(cards_played[0]['idc']):
                                 can_play=remaining_cards
                             else:
                                 can_play=cards_atout
@@ -250,21 +250,21 @@ def isWinning(card,cards_played,atout):
     winning = 0
     if cards_played:
         #Si on joue à l'atout
-        if cards_played[0]['id'] == atout:
-            if cards_played[0]['id'] in card['card_name']:
+        if cards_played[0]['idc'] == atout:
+            if cards_played[0]['idc'] in card['card_name']:
                 max=0
                 if len(cards_played)==1:
-                    max=order_a.index(cards_played[0]['id'])
-                    if order_a.index(card['id']) > max:
+                    max=order_a.index(cards_played[0]['idc'])
+                    if order_a.index(card['idc']) > max:
                         winning=1
                     else:
                         winning=-1
                 elif len(cards_played)==2:
-                    max = order_a.index(cards_played[0]['id'])
+                    max = order_a.index(cards_played[0]['idc'])
                     if atout in cards_played[1]['card_name']:
-                        if order_a.index(cards_played[1]['id']) > max :
-                            max = order_a.index(cards_played[1]['id'])
-                            if order_a.index(card['id']) > max:
+                        if order_a.index(cards_played[1]['idc']) > max :
+                            max = order_a.index(cards_played[1]['idc'])
+                            if order_a.index(card['idc']) > max:
                                 winning=1
                             else:
                                 winning=-1
@@ -273,14 +273,14 @@ def isWinning(card,cards_played,atout):
                     else:
                         winning=1
                 else:
-                    max = order_a.index(cards_played[0]['id'])
+                    max = order_a.index(cards_played[0]['idc'])
                     if atout in cards_played[1]['card_name']:
-                        if order_a.index(cards_played[1]['id']) > max :
-                            max = order_a.index(cards_played[1]['id'])
+                        if order_a.index(cards_played[1]['idc']) > max :
+                            max = order_a.index(cards_played[1]['idc'])
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
-                                    if order_a.index(card['id']) > max:
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
+                                    if order_a.index(card['idc']) > max:
                                         winning=1
                                     else:
                                         winning=-1
@@ -288,27 +288,27 @@ def isWinning(card,cards_played,atout):
                                 winning=1
                         else:
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
-                                    if order_a.index(card['id']) > max:
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
+                                    if order_a.index(card['idc']) > max:
                                         winning=1
                                     else:
                                         winning=-1
                             else:
-                                if order_a.index(card['id']) > max:
+                                if order_a.index(card['idc']) > max:
                                     winning=1
                                 else:
                                     winning=-1
                     else:
                         if atout in cards_played[2]['card_name']:
-                            if order_a.index(cards_played[2]['id']) > max :
-                                max = order_a.index(cards_played[2]['id'])
-                                if order_a.index(card['id']) > max:
+                            if order_a.index(cards_played[2]['idc']) > max :
+                                max = order_a.index(cards_played[2]['idc'])
+                                if order_a.index(card['idc']) > max:
                                     winning=1
                                 else:
                                     winning=-1
                         else:
-                            if order_a.index(card['id']) > max:
+                            if order_a.index(card['idc']) > max:
                                 winning=1
                             else:
                                 winning=-1
@@ -319,12 +319,12 @@ def isWinning(card,cards_played,atout):
             if len(cards_played)==3:
                 max=0
                 if atout in cards_played[1]['card_name']:
-                    max = order_a.index(cards_played[1]['id'])
+                    max = order_a.index(cards_played[1]['idc'])
                     if atout in cards_played[2]['card_name']:
-                        if order_a.index(cards_played[2]['id']) > max :
-                            max = order_a.index(cards_played[2]['id'])
+                        if order_a.index(cards_played[2]['idc']) > max :
+                            max = order_a.index(cards_played[2]['idc'])
                             if atout in card['card_name']:
-                                if order_a.index(card['id']) > max:
+                                if order_a.index(card['idc']) > max:
                                     winning=1
                                 else:
                                     winning=-1
@@ -336,40 +336,40 @@ def isWinning(card,cards_played,atout):
                         winning=1
                 else:
                     if atout in cards_played[2]['card_name']:
-                        max = order_a.index(cards_played[2]['id'])
+                        max = order_a.index(cards_played[2]['idc'])
                         if atout in card['card_name']:
-                            if order_a.index(card['id']) > max:
+                            if order_a.index(card['idc']) > max:
                                 winning=1
                             else:
                                 winning=-1
                         else:
                             winning=-1
                     else:
-                        if order_no_a.index(cards_played[2]['id'])<order_no_a.index(cards_played[1]['id']) and order_no_a.index(cards_played[1]['id']) >order_no_a.index(cards_played[0]['id']):
+                        if order_no_a.index(cards_played[2]['idc'])<order_no_a.index(cards_played[1]['idc']) and order_no_a.index(cards_played[1]['idc']) >order_no_a.index(cards_played[0]['idc']):
                             winning=1
                         else:
-                            if order_no_a.index(cards_played[2]['id'])<order_no_a.index(card['id']) and order_no_a.index(card['id']) >order_no_a.index(cards_played[0]['id']):
+                            if order_no_a.index(cards_played[2]['idc'])<order_no_a.index(card['idc']) and order_no_a.index(card['idc']) >order_no_a.index(cards_played[0]['idc']):
                                 winning=1
                             else:
                                 winning=-1
             elif len(cards_played)==1:
-                if order_no_a.index(cards_played[0]['id'])<order_no_a.index(card['id']):
+                if order_no_a.index(cards_played[0]['idc'])<order_no_a.index(card['idc']):
                     winning=1
                 else:
                     winning=-1
             else:
                 max=0
                 if atout in cards_played[1]['card_name']:
-                    max = order_a.index(cards_played[1]['id'])
+                    max = order_a.index(cards_played[1]['idc'])
                     if atout in card['card_name']:
-                        if order_a.index(card['id']) > max:
+                        if order_a.index(card['idc']) > max:
                             winning=1
                         else:
                             winning=-1
                     else:
                         winning=-1
                 else:
-                    if order_no_a.index(cards_played[1]['id'])<order_no_a.index(cards_played[0]['id']):
+                    if order_no_a.index(cards_played[1]['idc'])<order_no_a.index(cards_played[0]['idc']):
                         winning=1
                     else:
                         winning=-1
@@ -767,98 +767,98 @@ def canPlay(request):
             else:
                 max=0
                 if len(cards_played)==1:
-                    max=order_a.index(cards_played[0]['id'])
+                    max=order_a.index(cards_played[0]['idc'])
                     for e in cards_atout:
-                        if order_a.index(e['id']) > max:
+                        if order_a.index(e['idc']) > max:
                             can_play.append(e)
                     if not can_play:
                         can_play=cards_atout
                 elif len(cards_played)==2:
-                    max = order_a.index(cards_played[0]['id'])
+                    max = order_a.index(cards_played[0]['idc'])
                     if atout in cards_played[1]['card_name']:
-                        if order_a.index(cards_played[1]['id']) > max :
-                            max = order_a.index(cards_played[1]['id'])
+                        if order_a.index(cards_played[1]['idc']) > max :
+                            max = order_a.index(cards_played[1]['idc'])
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
                         else:
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
                     else:
                         for e in cards_atout:
-                            if order_a.index(e['id']) > max:
+                            if order_a.index(e['idc']) > max:
                                 can_play.append(e)
                         if not can_play:
                             can_play=cards_atout
                 else:
-                    max = order_a.index(cards_played[0]['id'])
+                    max = order_a.index(cards_played[0]['idc'])
                     if atout in cards_played[1]['card_name']:
-                        if order_a.index(cards_played[1]['id']) > max :
-                            max = order_a.index(cards_played[1]['id'])
+                        if order_a.index(cards_played[1]['idc']) > max :
+                            max = order_a.index(cards_played[1]['idc'])
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                                 else:
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                             else:
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                         else:
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                                 else:
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                             else:
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                     else:
                         if atout in cards_played[2]['card_name']:
-                            if order_a.index(cards_played[2]['id']) > max :
-                                max = order_a.index(cards_played[2]['id'])
+                            if order_a.index(cards_played[2]['idc']) > max :
+                                max = order_a.index(cards_played[2]['idc'])
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                             else:
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                         else:
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
@@ -879,18 +879,18 @@ def canPlay(request):
                     if len(cards_played)==3:
                         max=0
                         if atout in cards_played[1]['card_name']:
-                            max = order_a.index(cards_played[1]['id'])
+                            max = order_a.index(cards_played[1]['idc'])
                             if atout in cards_played[2]['card_name']:
-                                if order_a.index(cards_played[2]['id']) > max :
-                                    max = order_a.index(cards_played[2]['id'])
+                                if order_a.index(cards_played[2]['idc']) > max :
+                                    max = order_a.index(cards_played[2]['idc'])
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
                                 else:
                                     for e in cards_atout:
-                                        if order_a.index(e['id']) > max:
+                                        if order_a.index(e['idc']) > max:
                                             can_play.append(e)
                                     if not can_play:
                                         can_play=cards_atout
@@ -898,14 +898,14 @@ def canPlay(request):
                                 can_play=remaining_cards
                         else:
                             if atout in cards_played[2]['card_name']:
-                                max = order_a.index(cards_played[2]['id'])
+                                max = order_a.index(cards_played[2]['idc'])
                                 for e in cards_atout:
-                                    if order_a.index(e['id']) > max:
+                                    if order_a.index(e['idc']) > max:
                                         can_play.append(e)
                                 if not can_play:
                                     can_play=cards_atout
                             else:
-                                if order_no_a.index(cards_played[2]['id'])<order_no_a.index(cards_played[1]['id']) and order_no_a.index(cards_played[1]['id']) >order_no_a.index(cards_played[0]['id']):
+                                if order_no_a.index(cards_played[2]['idc'])<order_no_a.index(cards_played[1]['idc']) and order_no_a.index(cards_played[1]['idc']) >order_no_a.index(cards_played[0]['idc']):
                                     can_play=remaining_cards
                                 else:
                                     can_play=cards_atout
@@ -914,14 +914,14 @@ def canPlay(request):
                     else:
                         max=0
                         if atout in cards_played[1]['card_name']:
-                            max = order_a.index(cards_played[1]['id'])
+                            max = order_a.index(cards_played[1]['idc'])
                             for e in cards_atout:
-                                if order_a.index(e['id']) > max:
+                                if order_a.index(e['idc']) > max:
                                     can_play.append(e)
                             if not can_play:
                                 can_play=cards_atout
                         else:
-                            if order_no_a.index(cards_played[1]['id'])<order_no_a.index(cards_played[0]['id']):
+                            if order_no_a.index(cards_played[1]['idc'])<order_no_a.index(cards_played[0]['idc']):
                                 can_play=remaining_cards
                             else:
                                 can_play=cards_atout
