@@ -4,7 +4,7 @@ class ListCards(models.Model):
     card_name = models.CharField(max_length=10)
     value_atout = models.IntegerField()
     value_non_atout = models.IntegerField()
-    idc = models.CharField(max_length=2)
+    id = models.CharField(max_length=2, primary_key=True)
     objects = models.DjongoManager()
 
 class Rules(models.Model):
