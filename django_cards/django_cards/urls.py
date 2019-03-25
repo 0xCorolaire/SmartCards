@@ -20,7 +20,6 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from rest_framework import routers, serializers, viewsets
-from detector import views as detector_views
 from coinche import views as coinche_views
 from django_cards import views as system_view
 # Serializers define the API representation.
@@ -69,7 +68,6 @@ urlpatterns = [
     url(r'^getMetaGame$',coinche_views.getMetaDataGame),
     url(r'^getGameHands$', coinche_views.getGameHands),
     url(r'^sendResultGame$', coinche_views.sendResultGame),
-    url(r'^getCardsInPhoto$', detector_views.getCardsInPhoto),
     url(r'^connexion$', system_view.connexion_api),
     url(r'^register$', system_view.register_api),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
