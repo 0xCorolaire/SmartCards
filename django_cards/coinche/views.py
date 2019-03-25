@@ -575,6 +575,12 @@ def getAiBet(request):
     }
     """
     body = json.loads(request.body)
+    if body["isHuman"]:
+        bet = {
+            "type_bet": body["bet"]["type_bet"],
+            "value_bet": body["bet"]["value_bet"]
+        }
+        return Response(bet)
     total_hand = body['hand']
     hand = []
     partner_bet = body['team_bet']
