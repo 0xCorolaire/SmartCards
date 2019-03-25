@@ -39,6 +39,14 @@ de la vue Django REST Framework est de pouvoir retourner facilement dans un form
 On utilisera donc principalement les vues traditionnelles pour afficher des pages, et des
 vues REST Framework pour des appels d'API (qui serviront, par exemple, en appel AJAX).
 
+
+
+Your example sounds similar to Bridge. Top Bridge-playing systems use Monte Carlo methods to select moves. At a high level:
+
+Determine the probabilities of each card being in a given hand. You know with certainty which cards are in your hand and which cards have been played. Determine the probability of all other cards based on cards that have been played and possibly a player's bid if there's bidding involved. To start, you could just use a naive and equal probability that a card is in some player's hand.
+Now, run through as many "virtual" games as you can. Simulate playing a card from your hand and then determine your opponents' responses using the rules of the game and your probabilities. For each virtual game, use your probabilities to assign cards to a player and then quickly simulate the game. Assume each player will play to the best of their ability. You know all the cards in your virtual game so you can make each player play perfectly.
+When you have a solid sampling (or you run out of time), pick the legal move that gave you the best outcome most often.
+Once you get something working, you can add all sorts of enriched strategies. For instance, vary your probabilities based on a player's historic plays, vary probabilities based on a player's style (passive, cautious, aggressive), or even consider the effects of specific players playing together
 """
 
 models.DjongoManager()
@@ -244,6 +252,10 @@ def canPlayList(body):
     return can_play
 
 
+def canBet(body):
+
+    return []
+
 def isWinning(card,cards_played,atout):
     order_no_a = ['7','8','9','J','Q','K','10','A']
     order_a = ['7','8','Q','K','10','A','9','J']
@@ -424,8 +436,23 @@ def getRules(request):
     """
     Endpoint qui permet d'avoir les regles possibles de la coinches ( TA, SA , Couleur et nb de pts en tout)
     """
-    rules =Rules.objects.all().values('type_announce','total_point')
+    rules =list(Rules.objects.all().values('type_announce','total_point'))
     return Response(rules)
+
+@api_view(['POST'])
+@renderer_classes((JSONRenderer, ))
+def getMetaDataGame(request):
+    """
+    Endpoint qui permet de servir les meta datas de base
+    """
+    body = json.loads(request.body)
+    meta = {}
+    meta["id"] = "1"
+    meta["name"] = "coinche"
+    meta["type"] = body["type"]
+    meta["points"] = 1501
+    return Response(meta)
+
 
 @api_view(['GET'])
 @renderer_classes((JSONRenderer, ))
@@ -455,7 +482,7 @@ def getCard(request):
 def getGameHands(request):
     """
     Endpoint qui permet d'optenir 4 liste avec distribution aléatoire de 8 cartes par liste
-    request : firstGame(true/false), listLastGameCards([
+    request : newGame(true/false), listLastGameCards([
     {
         "card_name": "7s",
         "value_non_atout": 0,
@@ -464,7 +491,7 @@ def getGameHands(request):
     ...])
     """
     body = json.loads(request.body)
-    firstGame = body['firstGame']
+    firstGame = body['newGame']
     if firstGame == 'True':
         cards = list(ListCards.objects.all().values('card_name','value_non_atout','value_atout','idc'))
         random.shuffle(cards)
@@ -515,10 +542,10 @@ def getGameHands(request):
         extract = cards.pop()
         SouthHand.append(extract)
     return Response({
-        'East':EastHand,
-        'North':NorthHand,
-        'West':WestHand,
-        'South':SouthHand
+        'P1':EastHand,
+        'P2':NorthHand,
+        'P3':WestHand,
+        'P4':SouthHand
     })
 
 @api_view(['POST'])
@@ -548,10 +575,10 @@ def getAiBet(request):
     }
     """
     body = json.loads(request.body)
-    total_hand = body['player_hand']
+    total_hand = body['hand']
     hand = []
-    partner_bet = body['partner_bet']
-    ennemy_bet = body['ennemy_bet']
+    partner_bet = body['team_bet']
+    ennemy_bet = body['opposant_bet']
     for player_hand in total_hand:
         hand.append(player_hand.get('card_name'))
     s = 0
@@ -607,7 +634,7 @@ def getAiBet(request):
                         "value_bet" : "0",
                     }
                 else:
-                    upbet= 10*As + partner_bet['value_bet']
+                    upbet= 10*As + int(partner_bet['value_bet'])
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
                         "value_bet" : str(upbet),
