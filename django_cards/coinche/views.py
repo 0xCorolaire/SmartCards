@@ -633,7 +633,7 @@ def getAiBet(request):
     else:
         is_announcing_first ='True'
 
-    if partner_bet["has_ascend"]:
+    if partner_bet["has_ascend"] == "true":
         bet = {
             "type_bet": "Pass",
             "value_bet": "0",
