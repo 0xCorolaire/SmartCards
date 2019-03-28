@@ -570,7 +570,8 @@ def getAiBet(request):
         },
         "ennemy_bet" : {
             "type_bet" : "D",
-            "value_bet" : "80"
+            "value_bet" : "80",
+            "has_ascend": "true"
         }
     }
     """
@@ -578,7 +579,8 @@ def getAiBet(request):
     if body["isHuman"]:
         bet = {
             "type_bet": body["bet"]["type_bet"],
-            "value_bet": body["bet"]["value_bet"]
+            "value_bet": body["bet"]["value_bet"],
+            "has_ascend": body["bet"]["has_ascend"]
         }
         return Response(bet)
     total_hand = body['hand']
@@ -630,6 +632,15 @@ def getAiBet(request):
         is_announcing_first ='False'
     else:
         is_announcing_first ='True'
+
+    if partner_bet["has_ascend"]:
+        bet = {
+            "type_bet": "Pass",
+            "value_bet": "0",
+            "has_ascend": "true"
+        }
+        return Response(bet)
+
     if longe_n < 3:
         # on trouve la type
         if is_announcing_first=='False' and As != 0:
