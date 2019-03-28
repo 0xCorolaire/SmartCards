@@ -649,22 +649,26 @@ def getAiBet(request):
                     bet = {
                         "type_bet" : "Pass",
                         "value_bet" : "0",
+                        "has_ascend": "false"
                     }
                 else:
                     upbet= 10*As + int(partner_bet['value_bet'])
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
                         "value_bet" : str(upbet),
+                        "has_ascend": "true"
                     }
             else:
                 bet = {
                     "type_bet" : "Pass",
                     "value_bet" : "0",
+                    "has_ascend": "false"
                 }
         else:
             bet = {
                 "type_bet" : "Pass",
                 "value_bet" : "0",
+                "has_ascend": "false"
             }
     else:
         #On a une longe de 3 ou plus, on va étudier la longe
@@ -686,6 +690,7 @@ def getAiBet(request):
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
                         "value_bet" : str(upbet),
+                        "has_ascend": "true"
                     }
             else:
                 if (int(ennemy_bet['value_bet'])-int(partner_bet['value_bet']))<20 and As>1:
@@ -693,11 +698,13 @@ def getAiBet(request):
                     bet = {
                         "type_bet" : partner_bet['type_bet'],
                         "value_bet" : str(upbet),
+                        "has_ascend": "true"
                     }
                 else:
                     bet = {
                         "type_bet" : "Pass",
                         "value_bet" : "0",
+                        "has_ascend": "false"
                     }
         else:
             if longe_n < 5 :
@@ -705,28 +712,33 @@ def getAiBet(request):
                     bet = {
                         "type_bet" : "Pass",
                         "value_bet" : "0",
+                        "has_ascend": "false"
                     }
                 else:
                     if sum < 45 :
                         bet = {
                             "type_bet" : color.upper(),
                             "value_bet" : "80",
+                            "has_ascend": "false"
                         }
                     else:
                         bet = {
                             "type_bet" : color.upper(),
                             "value_bet" : "90",
+                            "has_ascend": "false"
                         }
             else:
                 if sum > 19 and sum < 30 :
                         bet = {
                             "type_bet" : color.upper(),
                             "value_bet" : "90",
+                            "has_ascend": "false"
                         }
                 else :
                         bet = {
                             "type_bet" : color.upper(),
                             "value_bet" : "100",
+                            "has_ascend": "false"
                         }
     return Response(bet)
 
