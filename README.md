@@ -3,40 +3,14 @@ Predictive app helping announce on various card games
 
 This project is using
   - python 3.6.7 and several libraries
-  - YOLOv3
-  - google colab
   - MongoDB 3.4
   - Django 1.11.0
 
-
 ---
 
-
-1. [Train](https://github.com/hugofloter/SmartCards#train-cards-with-yolov3-and-the-generated-datasets)
-2. [Creation of the API](https://github.com/hugofloter/SmartCards#create-the-api-to-detect-cards-and-cards_games-datas)
-3. [Doc of the API](https://github.com/hugofloter/SmartCards#api-doc-)
-4. [Creating the app](https://github.com/hugofloter/SmartCards#creating-datas-with-the-card-detector-application)
-
-
-# Card detector
-```
-jupyter notebook object_detection_tutorial.ipynb
-```
-
-## Train cards with YOLOv3 and the generated datasets
-### A. use YOLO ipny on google colab
-
-Check YOLO ipny and complete the setup indicated in the file
-
-## B. Run the train and export  frozen model.pb
-## C. result
-here are the result at step 170k
-
-![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result3.jpg)
-![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result1.jpg)
-![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result2.jpg)
-![alt text](https://raw.githubusercontent.com/hugofloter/SmartCards/master/Card_detector/data/result4.jpg)
-
+1. [Creation of the API](https://github.com/hugofloter/SmartCards#create-the-api-to-detect-cards-and-cards_games-datas)
+2. [Doc of the API](https://github.com/hugofloter/SmartCards#api-doc-)
+3. [Creating the app](https://github.com/hugofloter/SmartCards#creating-datas-with-the-card-detector-application)
 
 # Create the API to detect cards and cards_games datas
 ## Using django
