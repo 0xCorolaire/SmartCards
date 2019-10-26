@@ -1,5 +1,11 @@
 # SmartCards
-Predictive app helping announce on various card games
+BackEnd of Coinche Application https://github.com/hugofloter/CoincheApp
+
+Include **AI moves and choices based on alpha-beta elegation algorithm and MonteCarlo's**
+
+Algorithm is currently not optimized (O(n^3))
+
+Routes are served from Django framework
 
 This project is using
   - python 3.6.7 and several libraries
@@ -369,3 +375,7 @@ It uses an API created on the part 2.
 
 Moreover, it uses Tensorflow.js as main source of the recognition part. We transformed a saved modelTF into a TF.js mopdel with a .JSON with weights.
 Then we load it and be able to use it.
+
+
+Bibl:
+https://www.javatpoint.com/ai-alpha-beta-pruning
